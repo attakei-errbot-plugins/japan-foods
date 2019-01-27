@@ -19,9 +19,9 @@ class JapanFoods(BotPlugin):
         }
 
     def activate(self):
-        super().activate()
         self.config.setdefault('RWS_AREA_CODE', 'X025,X026,XA34,XA35')
         self.config.setdefault('GNAVI_AREA_CODE', 'AREAS2111')
+        super().activate()
 
     @arg_botcmd('keyword', type=str)
     def jp_foods_search(self, msg, keyword):
@@ -80,7 +80,7 @@ class JapanFoods(BotPlugin):
         resp = requests.get(url)
         data = resp.json()
         shop_list = []
-        for s in data['rest']:
+        for s in data.get('rest', []):
             shop_list.append(
                 ShopInfo(s['name'], s['url']))
         return shop_list
