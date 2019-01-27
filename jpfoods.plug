@@ -1,0 +1,10 @@
+[Core]
+name = JpFoods
+module = jpfoods
+
+[Documentation]
+description = Japan foods information
+
+[Python]
+version = 3
+

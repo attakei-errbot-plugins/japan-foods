@@ -9,7 +9,7 @@ from errbot import BotPlugin, arg_botcmd
 ShopInfo = namedtuple('ShopInfo', ('name', 'url'))
 
 
-class JapanFoods(BotPlugin):
+class JpFoods(BotPlugin):
     def get_configuration_template(self):
         return {
             'RWS_API_KEY': '000011112222',
