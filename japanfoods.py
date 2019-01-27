@@ -9,15 +9,22 @@ from errbot import BotPlugin, arg_botcmd
 ShopInfo = namedtuple('ShopInfo', ('name', 'url'))
 
 
-class Kachidokifoods(BotPlugin):
+class JapanFoods(BotPlugin):
     def get_configuration_template(self):
         return {
             'RWS_API_KEY': '000011112222',
+            'RWS_AREA_CODE': 'XX00',
             'GNAVI_API_KEY': '000011112222',
+            'GNAVI_AREA_CODE': 'AREAS00000',
         }
 
+    def activate(self):
+        super().activate()
+        self.config.setdefault('RWS_AREA_CODE', 'X025,X026,XA34,XA35')
+        self.config.setdefault('GNAVI_AREA_CODE', 'AREAS2111')
+
     @arg_botcmd('keyword', type=str)
-    def kachidoki_foods_search(self, msg, keyword):
+    def jp_foods_search(self, msg, keyword):
         """Hotpepper, ぐるなびから、周辺のお店情報を検索します
         """
         shop_list = []
@@ -29,7 +36,7 @@ class Kachidokifoods(BotPlugin):
 
     @arg_botcmd('keyword', type=str)
     @arg_botcmd('-n', '--num', dest='num', type=int, default=3)
-    def kachidoki_foods_choice(self, msg, keyword, num=3):
+    def jp_foods_choice(self, msg, keyword, num=3):
         shop_list = []
         shop_list += self._search_by_rws(keyword)
         shop_list += self._search_by_gnavi(keyword)
@@ -41,13 +48,15 @@ class Kachidokifoods(BotPlugin):
             ])
 
     def _search_by_rws(self, keyword):
-        """勝どき周辺のホットペッパー掲載サイトをキーワード検索します
+        """周辺のホットペッパー掲載サイトをキーワード検索します
         """
         api_key = self.config.get('RWS_API_KEY', False)
         if not api_key:
             return []
+        area_code = self.config.get('RWS_AREA_CODE', False)
+        if not area_code:
+            return []
         # Fetch from RWS の小マスターAPIを利用（エリア:Y005
-        area_code = 'X025,X026,XA34,XA35'
         url = f"http://webservice.recruit.co.jp/hotpepper/gourmet/v1/" \
             f"?key={api_key}&small_area={area_code}&keyword={keyword}"
         resp = requests.get(url)
@@ -63,7 +72,9 @@ class Kachidokifoods(BotPlugin):
         if not api_key:
             return []
         # 晴海
-        area_code = 'AREAS2111'
+        area_code = self.config.get('GNAVI_AREA_CODE', False)
+        if not area_code:
+            return []
         url = f"https://api.gnavi.co.jp/RestSearchAPI/v3/"\
             f"?keyid={api_key}&areacode_s={area_code}&freeword={keyword}"
         resp = requests.get(url)

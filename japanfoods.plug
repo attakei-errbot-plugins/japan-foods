@@ -1,0 +1,10 @@
+[Core]
+name = JapanFoods
+module = japanfoods
+
+[Documentation]
+description = Japan foods information(default is Kachidoki)
+
+[Python]
+version = 3
+
