@@ -1,3 +1,4 @@
+import random
 from collections import namedtuple
 
 import requests
@@ -25,6 +26,19 @@ class Kachidokifoods(BotPlugin):
         if len(shop_list) == 0:
             return '検索に引っかかりませんでした'
         return '\n'.join([f"- {s.name} {s.url}" for s in shop_list])
+
+    @arg_botcmd('keyword', type=str)
+    @arg_botcmd('-n', '--num', dest='num', type=int, default=3)
+    def kachidoki_foods_choice(self, msg, keyword, num=3):
+        shop_list = []
+        shop_list += self._search_by_rws(keyword)
+        shop_list += self._search_by_gnavi(keyword)
+        if len(shop_list) == 0:
+            return 'キーワード検索に引っかかりませんでした'
+        return 'このあたりはどうでしょう？\n' + \
+            '\n'.join([
+                f"- {s.name} {s.url}" for s in random.sample(shop_list, num)
+            ])
 
     def _search_by_rws(self, keyword):
         """勝どき周辺のホットペッパー掲載サイトをキーワード検索します
