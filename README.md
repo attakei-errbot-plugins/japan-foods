@@ -14,7 +14,7 @@
 基本的には、チャットツール上の管理コマンドで有効にしてください
 
 ```
-! repos install attakei-errbot-plugins/kachidoki-foods 
+!repos install https://github.com/attakei-errbot-plugins/kachidoki-foods 
 ```
 
 ### Git管理で
