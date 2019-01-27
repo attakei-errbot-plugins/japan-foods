@@ -1,0 +1,10 @@
+[Core]
+name = KachidokiFoods
+module = kachidokifoods
+
+[Documentation]
+description = Kachidoki foods information
+
+[Python]
+version = 3
+
