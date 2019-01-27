@@ -18,11 +18,6 @@ class JapanFoods(BotPlugin):
             'GNAVI_AREA_CODE': 'AREAS00000',
         }
 
-    def activate(self):
-        self.config.setdefault('RWS_AREA_CODE', 'X025,X026,XA34,XA35')
-        self.config.setdefault('GNAVI_AREA_CODE', 'AREAS2111')
-        super().activate()
-
     @arg_botcmd('keyword', type=str)
     def jp_foods_search(self, msg, keyword):
         """Hotpepper, ぐるなびから、周辺のお店情報を検索します
